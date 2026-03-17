@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday 🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose: #f43f6e; --gold: #f5c842; --blush: #fde8ef;
+      --cream: #fff9f0; --deep: #3b0a24; --soft-rose: #f9a8c4; --lavender: #c084fc;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--cream); font-family: 'Lato', sans-serif; overflow-x: hidden; min-height: 100vh; }
+
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(244,63,110,.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 90%, rgba(192,132,252,.15) 0%, transparent 55%),
+        radial-gradient(ellipse at 60% 40%, rgba(245,200,66,.08) 0%, transparent 50%);
+    }
+
+    .confetti-wrap { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .dot { position: absolute; border-radius: 2px; opacity: 0; animation: fall var(--d,6s) var(--delay,0s) infinite ease-in; }
+    @keyframes fall { 0% { transform: translateY(-30px) rotate(0deg); opacity:1; } 100% { transform: translateY(110vh) rotate(720deg); opacity:0; } }
+
+    .hero {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 60px 20px 40px; text-align: center;
+    }
+    .crown { font-size: clamp(3rem,8vw,6rem); animation: bounce 2s ease-in-out infinite; line-height:1; margin-bottom:10px; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    .headline {
+      font-family:'Dancing Script',cursive; font-size:clamp(3rem,9vw,7rem); line-height:1.1;
+      background:linear-gradient(135deg,var(--rose) 0%,var(--lavender) 50%,var(--gold) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      margin-bottom:8px; filter:drop-shadow(0 4px 20px rgba(244,63,110,.25));
+    }
+    .sub { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.1rem,3vw,1.6rem); color:var(--deep); opacity:.75; margin-bottom:48px; letter-spacing:.04em; }
+    .hearts { display:flex; gap:12px; font-size:1.4rem; margin-bottom:48px; }
+    .hearts span { animation:heartbeat 1.4s ease-in-out infinite; }
+    .hearts span:nth-child(2){animation-delay:.2s} .hearts span:nth-child(3){animation-delay:.4s}
+    .hearts span:nth-child(4){animation-delay:.6s} .hearts span:nth-child(5){animation-delay:.8s}
+    @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35)} }
+
+    .video-wrap {
+      position:relative; width:min(640px,92vw); border-radius:24px; overflow:hidden;
+      box-shadow:0 0 0 4px var(--rose),0 0 0 8px var(--gold),0 30px 80px rgba(244,63,110,.35); margin-bottom:56px;
+    }
+    .video-wrap::before {
+      content:''; position:absolute; inset:-2px; z-index:1; border-radius:26px;
+      background:linear-gradient(135deg,var(--rose),var(--lavender),var(--gold),var(--rose));
+      background-size:400% 400%; animation:gradientBorder 4s linear infinite; mix-blend-mode:overlay; pointer-events:none;
+    }
+    @keyframes gradientBorder { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    video { width:100%; display:block; border-radius:22px; }
+
+    .message-card {
+      width:min(560px,90vw); background:rgba(255,255,255,.75); backdrop-filter:blur(16px);
+      border:1.5px solid rgba(244,63,110,.2); border-radius:20px; padding:36px 40px;
+      box-shadow:0 16px 48px rgba(244,63,110,.12); margin-bottom:60px;
+    }
+    .message-card p { font-family:'Playfair Display',serif; font-size:clamp(1rem,2.2vw,1.2rem); line-height:1.8; color:var(--deep); }
+    .message-card .signature { margin-top:20px; font-family:'Dancing Script',cursive; font-size:1.8rem; color:var(--rose); }
+
+    .balloons { position:fixed; bottom:-20px; width:100%; display:flex; justify-content:space-around; pointer-events:none; z-index:0; }
+    .balloon { font-size:clamp(2rem,5vw,3.5rem); animation:floatUp var(--d2,8s) var(--d3,0s) ease-in-out infinite alternate; opacity:.85; }
+    @keyframes floatUp { from{transform:translateY(0) rotate(-6deg)} to{transform:translateY(-60px) rotate(6deg)} }
+
+    .cake-section { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; margin-bottom:56px; }
+    #cake-canvas { cursor:grab; background:transparent; }
+    #cake-canvas:active { cursor:grabbing; }
+
+    .footer { position:relative; z-index:1; text-align:center; font-size:.85rem; color:var(--deep); opacity:.45; padding-bottom:32px; letter-spacing:.06em; }
+  </style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="confetti-wrap" id="confetti"></div>
+
+<div class="balloons">
+  <div class="balloon" style="--d2:9s;--d3:0s">🎈</div>
+  <div class="balloon" style="--d2:7s;--d3:1.2s">🎀</div>
+  <div class="balloon" style="--d2:10s;--d3:0.5s">🎈</div>
+  <div class="balloon" style="--d2:8s;--d3:2s">🎉</div>
+  <div class="balloon" style="--d2:11s;--d3:0.8s">🎈</div>
+  <div class="balloon" style="--d2:7.5s;--d3:1.5s">🎀</div>
+  <div class="balloon" style="--d2:9.5s;--d3:0.3s">🎈</div>
+</div>
+
+<section class="hero">
+  <div class="crown">👑</div>
+  <h1 class="headline">Happy Birthday</h1>
+  <p class="sub">Today is all about you — celebrate every moment ✨</p>
+  <div class="hearts"><span>💕</span><span>🌸</span><span>💖</span><span>🌸</span><span>💕</span></div>
+
+  <div class="cake-section">
+    <canvas id="cake-canvas" width="300" height="300"></canvas>
+  </div>
+
+  <div class="video-wrap">
+    <video autoplay muted loop playsinline>
+      <source src="birthday_video.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="message-card">
+    <p>
+      Happy Birthday เจ้าน้ำส้ม! 🌷
+      <br><br>
+      มีความสุขมากๆนะครับ เงินทองไหลมาเทมาเฮงๆเน้ออ พักผ่อนเยอะๆนะ ดูแลสุขภาพด้วยอย่าให้ป่วย 🎂✨
+    </p>
+    <div class="signature">Wish you all the best 💗</div>
+  </div>
+
+  <div class="footer">คิดถึงเสมอนะ เวลาไม่ช่วยให้ลืมจริงๆ 💖</div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  const canvas = document.getElementById('cake-canvas');
+  const W = 300, H = 300;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(0.45); // chunky pixel look
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+  camera.position.set(0, 3.8, 10.0);
+  camera.lookAt(0, 1.8, 0);
+
+  // Warm soft lighting
+  scene.add(new THREE.AmbientLight(0xfff5fb, 1.1));
+  const sun = new THREE.DirectionalLight(0xffe8f8, 0.8);
+  sun.position.set(4, 10, 6); scene.add(sun);
+  const fill = new THREE.DirectionalLight(0xffd6ff, 0.4);
+  fill.position.set(-5, 3, -3); scene.add(fill);
+  const candleGlow = new THREE.PointLight(0xffbb33, 3.5, 10);
+  candleGlow.position.set(0, 5.0, 1); scene.add(candleGlow);
+
+  const G = new THREE.Group();
+  scene.add(G);
+
+  // Pixel unit
+  const P = 0.50;
+
+  function m(hex) { return new THREE.MeshLambertMaterial({ color: hex }); }
+
+  // Cute pastel palette
+  const C = {
+    plateTop:  m(0xfce8f5),
+    plateDot:  m(0xffb3d1),
+    frost:     m(0xff9dbb),   // vivid bubblegum pink
+    frostHi:   m(0xffcce0),   // light pink
+    frostDrip: m(0xffb3cc),
+    choc:      m(0x7a3b10),
+    chocMid:   m(0xa05228),
+    cream:     m(0xfff5d0),
+    heartRed:  m(0xff3d6e),
+    starYel:   m(0xffe033),
+    starOra:   m(0xffaa00),
+    dotMint:   m(0x6ee8a0),
+    dotLav:    m(0xb890ff),
+    dotPeach:  m(0xffaa80),
+    white:     m(0xffffff),
+    cndPink:   m(0xff85b0),
+    cndLav:    m(0xb090f8),
+    cndMint:   m(0x70dda8),
+    cndPale:   m(0xfff0f8),
+    wick:      m(0x2a1000),
+    cherry:    m(0xdd0033),
+    cherryS:   m(0x2a7a1a),
+  };
+
+  function box(w, h, d, mat, x, y, z) {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    mesh.position.set(x, y, z);
+    G.add(mesh); return mesh;
+  }
+
+  const HW = 3.8; // half-width of cake in voxels
+
+  // ── PLATE ──
+  box((HW*2+2.0)*P, 0.4*P, (HW*2+2.0)*P, C.plateTop, 0, 0.2*P, 0);
+  // cute rim dots
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2;
+    box(0.28*P, 0.28*P, 0.28*P, C.plateDot,
+      Math.cos(a)*(HW+0.85)*P, 0.5*P, Math.sin(a)*(HW+0.85)*P);
+  }
+
+  const base = 0.65 * P;
+
+  // ── CAKE BODY ──
+  const w = HW*2*P, d = HW*2*P;
+
+  // bottom frosting band
+  box(w, 1.2*P, d, C.frost,   0, base + 0.6*P,  0);
+  // choc sponge layers
+  box(w, 0.55*P, d, C.choc,   0, base + 1.475*P, 0);
+  box(w, 0.40*P, d, C.cream,  0, base + 1.925*P, 0);
+  box(w, 0.55*P, d, C.chocMid,0, base + 2.275*P, 0);
+  box(w, 0.40*P, d, C.cream,  0, base + 2.725*P, 0);
+  box(w, 0.55*P, d, C.choc,   0, base + 3.075*P, 0);
+  // top frosting band
+  box(w, 1.1*P, d, C.frost,   0, base + 3.75*P, 0);
+  // top frosting cap (slightly wider)
+  box((HW*2+0.9)*P, 0.5*P, (HW*2+0.9)*P, C.frostHi, 0, base + 4.55*P, 0);
+
+  // ── DRIP SCALLOPS — two rows, varied heights ──
+  const dripY   = base + 4.05*P;
+  const dripEdge = (HW + 0.44)*P;
+  for (let i = 0; i < 8; i++) {
+    const ox = (-HW + 0.5 + i) * P;
+    const tall = i % 2 === 0;
+    const dh = tall ? 0.80*P : 0.60*P;
+    const dw = tall ? 0.82*P : 0.70*P;
+    box(dw, dh, dw, C.frostDrip,  ox, dripY - (tall?0.1:0.05)*P, -dripEdge);
+    box(dw, dh, dw, C.frostDrip,  ox, dripY - (tall?0.1:0.05)*P,  dripEdge);
+  }
+  for (let i = 0; i < 8; i++) {
+    const oz = (-HW + 0.5 + i) * P;
+    const tall = i % 2 === 0;
+    const dh = tall ? 0.80*P : 0.60*P;
+    const dw = tall ? 0.82*P : 0.70*P;
+    box(dw, dh, dw, C.frostDrip, -dripEdge, dripY - (tall?0.1:0.05)*P, oz);
+    box(dw, dh, dw, C.frostDrip,  dripEdge, dripY - (tall?0.1:0.05)*P, oz);
+  }
+
+  // ── PIXEL HEARTS on front face ──
+  function pixelHeart(cx, cy, cz, s, mat) {
+    [[-1,2],[0,2],[1,2],
+     [-2,1],[-1,1],[0,1],[1,1],[2,1],
+     [-2,0],[-1,0],[0,0],[1,0],[2,0],
+     [-1,-1],[0,-1],[1,-1],
+     [0,-2]
+    ].forEach(([px,py]) => box(s, s, s*0.45, mat, cx+px*s, cy+py*s, cz));
+  }
+  const fZ = -(HW+0.15)*P, hY = base + 2.4*P;
+  pixelHeart(-1.9*P, hY, fZ, 0.20*P, C.heartRed);
+  pixelHeart( 0.0,   hY, fZ, 0.20*P, C.heartRed);
+  pixelHeart( 1.9*P, hY, fZ, 0.20*P, C.heartRed);
+
+  // ── PIXEL STARS on left & right faces ──
+  function pixelStar(cx, cy, cz, s, c1, c2) {
+    [[0,0],[0,1],[0,-1],[1,0],[-1,0],[0,2],[0,-2],[2,0],[-2,0]].forEach(([px,py]) =>
+      box(s, s, s*0.45, c1, cx+px*s, cy+py*s, cz));
+    [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([px,py]) =>
+      box(s*0.85, s*0.85, s*0.45, c2, cx+px*s, cy+py*s, cz));
+  }
+  const sX = (HW+0.15)*P, sY = base + 2.4*P;
+  pixelStar( sX, sY,  1.4*P, 0.18*P, C.starYel, C.starOra);
+  pixelStar( sX, sY, -1.4*P, 0.18*P, C.starYel, C.starOra);
+  pixelStar(-sX, sY,  1.4*P, 0.18*P, C.starYel, C.starOra);
+  pixelStar(-sX, sY, -1.4*P, 0.18*P, C.starYel, C.starOra);
+
+  // ── PIXEL FLOWERS on back face ──
+  function pixelFlower(cx, cy, cz, s) {
+    [[0,1],[0,-1],[1,0],[-1,0]].forEach(([px,py]) =>
+      box(s, s, s*0.4, C.starYel, cx+px*s, cy+py*s, cz));
+    box(s, s, s*0.45, C.starOra, cx, cy, cz); // centre
+  }
+  pixelFlower(-1.5*P, base+2.4*P, (HW+0.15)*P, 0.22*P);
+  pixelFlower( 0.0,   base+2.4*P, (HW+0.15)*P, 0.22*P);
+  pixelFlower( 1.5*P, base+2.4*P, (HW+0.15)*P, 0.22*P);
+
+  // ── CHERRIES on top ──
+  function cherry(x, z) {
+    const topY = base + 4.82*P;
+    box(0.38*P, 0.38*P, 0.38*P, C.cherry,  x,        topY + 0.19*P, z);
+    box(0.10*P, 0.40*P, 0.10*P, C.cherryS, x+0.12*P, topY + 0.45*P, z);
+  }
+  cherry(-1.4*P, -0.6*P);
+  cherry( 0.3*P,  1.2*P);
+  cherry( 1.5*P, -0.3*P);
+
+  // ── COLOURFUL SPRINKLE DOTS on top cap ──
+  const topY2 = base + 4.82*P;
+  [[-2.2,0,-1.5],[-1.0,0,-2.8],[1.2,0,-2.2],[2.5,0,-0.8],
+   [-2.6,0, 1.2],[-1.3,0, 2.6],[1.0,0, 2.8],[2.6,0, 1.4],
+   [-0.3,0, 0.8],[0.9,0,-0.6],[-1.8,0,0.2],[1.8,0,1.0]
+  ].forEach(([sx,,sz],i) => {
+    const mats = [C.heartRed,C.starYel,C.dotMint,C.dotLav,C.dotPeach,C.white];
+    box(0.30*P,0.30*P,0.30*P, mats[i%mats.length], sx*P*0.55, topY2, sz*P*0.55);
+  });
+
+  // ── CANDLES — 3 chubby cute ones ──
+  const candleBase = base + 5.08*P;
+  const candleH    = 2.6*P;
+  const segH       = candleH / 4;
+  const candleDefs = [
+    { x: -1.2*P, col: C.cndPink, fc: 0xff2255 },
+    { x:  0.0,   col: C.cndLav,  fc: 0xff8800 },
+    { x:  1.2*P, col: C.cndMint, fc: 0xff4400 },
+  ];
+  const flames = [];
+
+  candleDefs.forEach(({ x, col, fc }) => {
+    const cw = 0.60*P;
+    // striped body
+    [col, C.cndPale, col, C.cndPale].forEach((sm, si) =>
+      box(cw, segH, cw, sm, x, candleBase + segH*(si+0.5), 0)
+    );
+    // rounded top cap
+    box(cw*0.9, 0.20*P, cw*0.9, C.cndPale, x, candleBase+candleH+0.10*P, 0);
+    // cute wax drip on side
+    box(0.22*P, 0.35*P, 0.18*P, C.cndPale, x+cw*0.55, candleBase+candleH*0.65, 0);
+    // wick
+    box(0.09*P, 0.38*P, 0.09*P, C.wick, x, candleBase+candleH+0.38*P, 0);
+
+    // Flame — 3 stacked voxels: base / mid / tip
+    const fBase = candleBase + candleH + 0.60*P;
+    const fm0 = new THREE.MeshLambertMaterial({ color:fc,       emissive:fc,       emissiveIntensity:1.0, transparent:true, opacity:0.95 });
+    const fm1 = new THREE.MeshLambertMaterial({ color:0xffcc00, emissive:0xff9900, emissiveIntensity:1.2, transparent:true, opacity:0.92 });
+    const fm2 = new THREE.MeshLambertMaterial({ color:0xffffff, emissive:0xffee55, emissiveIntensity:1.5, transparent:true, opacity:0.85 });
+
+    const f0 = new THREE.Mesh(new THREE.BoxGeometry(0.42*P, 0.42*P, 0.42*P), fm0);
+    const f1 = new THREE.Mesh(new THREE.BoxGeometry(0.30*P, 0.30*P, 0.30*P), fm1);
+    const f2 = new THREE.Mesh(new THREE.BoxGeometry(0.18*P, 0.18*P, 0.18*P), fm2);
+    f0.position.set(x, fBase,           0); f0.userData = { baseY:fBase,           phase:x*5,     isFlame:true };
+    f1.position.set(x, fBase+0.38*P,    0); f1.userData = { baseY:fBase+0.38*P,    phase:x*5+0.5, isFlame:true };
+    f2.position.set(x, fBase+0.66*P,    0); f2.userData = { baseY:fBase+0.66*P,    phase:x*5+1.0, isFlame:true };
+    G.add(f0); G.add(f1); G.add(f2);
+    flames.push(f0, f1, f2);
+  });
+
+  // ── Drag to rotate ──
+  let isDragging=false, prevX=0, prevY=0, rotY=0.38, rotX=0.20, velY=0.018;
+  canvas.addEventListener('mousedown', e=>{isDragging=true;prevX=e.clientX;prevY=e.clientY;velY=0;});
+  window.addEventListener('mouseup',()=>isDragging=false);
+  window.addEventListener('mousemove',e=>{
+    if(!isDragging)return;
+    velY=(e.clientX-prevX)*0.013; rotY+=velY;
+    rotX+=(e.clientY-prevY)*0.007; rotX=Math.max(-0.15,Math.min(0.55,rotX));
+    prevX=e.clientX; prevY=e.clientY;
+  });
+  canvas.addEventListener('touchstart',e=>{isDragging=true;prevX=e.touches[0].clientX;prevY=e.touches[0].clientY;velY=0;},{passive:true});
+  window.addEventListener('touchend',()=>isDragging=false);
+  window.addEventListener('touchmove',e=>{
+    if(!isDragging)return;
+    velY=(e.touches[0].clientX-prevX)*0.013; rotY+=velY;
+    rotX+=(e.touches[0].clientY-prevY)*0.007; rotX=Math.max(-0.15,Math.min(0.55,rotX));
+    prevX=e.touches[0].clientX; prevY=e.touches[0].clientY;
+  },{passive:true});
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate); t+=0.038;
+    if(!isDragging){rotY+=velY; velY+=(0.018-velY)*0.05;}
+    G.rotation.y=rotY; G.rotation.x=rotX;
+    G.position.y=Math.sin(t*1.1)*0.055; // gentle float
+    flames.forEach(f=>{
+      if(!f.userData.isFlame)return;
+      f.position.y=f.userData.baseY+Math.sin(t*5+f.userData.phase)*0.048*P;
+      const fl=0.80+Math.sin(t*8+f.userData.phase)*0.20;
+      f.scale.set(fl,1,fl);
+    });
+    candleGlow.intensity=3.0+Math.sin(t*5)*1.0+Math.sin(t*9)*0.4;
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+</script>
+
+<script>
+  const colors = ['#f43f6e','#f5c842','#c084fc','#f9a8c4','#60d394','#4fc3f7'];
+  const wrap = document.getElementById('confetti');
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'dot';
+    el.style.cssText = `
+      left:${Math.random()*100}%;top:${-10-Math.random()*40}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*10}px;height:${6+Math.random()*10}px;
+      border-radius:${Math.random()>.5?'50%':'2px'};
+      --d:${4+Math.random()*7}s;--delay:${Math.random()*6}s;
+    `;
+    wrap.appendChild(el);
+  }
+</script>
+</body>
+</html>
